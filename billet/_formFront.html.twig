@@ -1,0 +1,34 @@
+{{ form_start(form,{'attr':{'novalidate':'novalidate'}},{'attr':{'class':'form-horizontal'}}) }}
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.date_voyage,"Date Voyage :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.date_voyage,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.date_voyage) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.date_voyage) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br><b>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.payment_status,"Payment Status :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.payment_status,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.payment_status) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.payment_status) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br><br>
+    <div align="center" class="card-footer">
+        <button style="width:70px;" class="btn btn-block btn-primary btn-sm"><i class="zmdi zmdi-plus"></i>{{ button_label|default('Ajouter') }}</button>
+        <button style="margin-top:1px;margin-left:10px;width:220px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_transport_index_front') }}">Retour a la Liste des Transports</a></button>
+    </div>
+{{ form_end(form) }}

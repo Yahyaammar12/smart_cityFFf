@@ -1,0 +1,48 @@
+{% extends 'baseVisiteur.html.twig' %}
+
+{% block title %}OneUrban | Liste des Transports{% endblock %}
+
+{% block body %}
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <h1 class="mb-3">| Liste des Transports</h1>
+    </div>
+    <div class="row g-4">
+        {% for transport in transports %}
+            {% set img = transport.image %}
+            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                <a class="cat-item d-block bg-light text-center rounded p-3" href="#">
+                    <div class="rounded p-4">
+                        <div class="icon mb-3">
+                            <img class="img-fluid" src="{{ asset(img) }}" style="height: 70px;" alt="No File Found.">
+                        </div>
+                        <br>
+                        <span><strong>Départ: </strong>{{ transport.depart }} </span>
+                        <br>
+                        <span><strong>Destination: </strong>{{ transport.destination}}</span>
+                        <br>
+                        <span>
+                            <strong>Type: </strong>
+                            {% if transport.type == 'FLIGHT' %}
+                                <span class="btn btn-block btn-secondary btn-sm">Flight</span>
+                            {% elseif transport.type == 'BUS' %}
+                                <span class="btn btn-block btn-success btn-sm">Bus</span>
+                            {% elseif transport.type == 'TRAIN' %}
+                                <span class="btn btn-block btn-danger btn-sm">Train</span>
+                            {% else %}
+                                <span class="btn btn-block btn-warning btn-sm">{{ transport.type }}</span>
+                            {% endif %}
+                        </span>
+                        <br>
+                        <span><strong>Tarif: </strong>{{ transport.tarif }}<strong> DT</strong></span>
+                        <a style="margin-left:35px;" class="btn btn-dark py-3 px-4" href="{{ path('app_billet_new_front', {'id': transport.id}) }}">Réservez un Billet</a>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div style="margin-left:500px;" class="pagination">
+        {% do transports.setPageRange(8) %}
+        {{knp_pagination_render(transports, 'pagination.html.twig')}}
+        <br><br><br><br><br>
+    </div>
+{% endblock %}

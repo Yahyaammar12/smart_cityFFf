@@ -1,0 +1,120 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Liste des Transports{% endblock %}
+
+{% block body %}
+    <h1>| Liste des Transports</h1>
+    
+
+    <button style="margin-left:50px;width:150px;" class="btn btn-block btn-primary">
+        <a style="color:#fff;" href="{{ path('app_transport_new') }}"><i class="fa fa-plus"></i> Créer un nouveau</a>
+    </button>
+    <br>
+    <div style="background-color:#fff;">
+        <br>
+        <input style="margin-left:30px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+        <br><br>
+        <div style="margin-top:-135px;margin-left:1000px;" class="btn-group">
+            <button type="button" id="actionBtn" class="btn btn-info">Tri Par</button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('app_transport_index') }}" onclick="setActionText(this)">Défaut</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('app_transport_index_sort_placesLibres') }}" onclick="setActionText(this)">Places Libres</a></li>
+                <li><a href="{{ path('app_transport_index_sort_tarif') }}" onclick="setActionText(this)">Tarif</a></li>
+                <li><a href="{{ path('app_transport_index_sort_horaire') }}" onclick="setActionText(this)">Horaire</a></li>
+                <li><a href="{{ path('app_transport_index_sort_type') }}" onclick="setActionText(this)">Type</a></li>
+            </ul>
+        </div>
+        <a style="margin-top:-175px;margin-left:1100px;" class="btn btn-warning" href="{{ path('app_transport_index_stat') }}">Statistiques</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Image</th>
+                    <th>Horaire</th>
+                    <th>Tarif</th>
+                    <th>Places Libres</th>
+                    <th>Départ</th>
+                    <th>Destination</th>
+                    <th>Company</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for transport in transports %}
+                {% set img = transport.image %}
+                <tr>
+                    <td>
+                        {% if transport.type == 'FLIGHT' %}
+                            <span class="label label-primary">Flight</span>
+                        {% elseif transport.type == 'BUS' %}
+                            <span class="label label-success">Bus</span>
+                        {% elseif transport.type == 'TRAIN' %}
+                            <span class="label label-danger">Train</span>
+                        {% else %}
+                            <span class="label label-warning">{{ transport.type }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <img src="{{ asset(img) }}" style="height: 70px;" alt="Erreur Import.">
+                    </td>
+                    <td>{{ transport.horaire ? transport.horaire|date('H:i:s') : '' }}</td>
+                    <td>{{ transport.tarif }} <strong> DT</strong></td>
+                    <td>{{ transport.placesLibres }} <strong>places</strong></td>
+                    <td>{{ transport.depart }}</td>
+                    <td>{{ transport.destination }}</td>
+                    <td>
+                        <span class="label label-warning">{{ transport.company }}</span>
+                    </td>
+                    <td>
+                        <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_transport_show', {'id': transport.id}) }}"><i class="fa fa-ellipsis-v"></i></a></button>
+                        &nbsp;
+                        <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm"><a style="color:#fff;" href="{{ path('app_transport_edit', {'id': transport.id}) }}"><i class="fa fa-edit"></i></a></button>
+                        &nbsp;
+                        {{ include('transport/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">No Transports found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+<script>
+    function setActionText(element) {
+        const actionBtn = document.getElementById("actionBtn");
+        actionBtn.textContent = element.textContent;
+    }
+</script>
+
+
+<script>
+	function filterTable() {
+        const filter = document.getElementById('searchInput').value.toUpperCase();
+        const rows = document.querySelectorAll('table tr');
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll('td');
+            let visible = false;
+            for (let j = 0; j < cols.length; j++) {
+                const cell = cols[j];
+                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                    visible = true;
+                    break;
+                }
+            }
+            rows[i].style.display = visible ? '' : 'none';
+        }
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+</script>
+
+    
+{% endblock %}

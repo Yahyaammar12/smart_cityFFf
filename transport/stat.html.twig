@@ -1,0 +1,78 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Statistiques des Transports{% endblock %}
+
+
+{% block body %}
+
+<div align="center" style="background-color:#fff;" class="col-lg-12 grid-margin stretch-card">
+    <br>
+    <a style="margin-left:-1115px;" class="btn btn-warning" href="{{ path('app_transport_index') }}">Retour à la liste</a>
+    <br><br>
+    <div class="card">
+        <div class="card-body">
+            <h4><strong><i class="fa fa-bar-chart"></i>  Statistiques des Transports selon les nombres des places libres <i class="fa fa-bar-chart"></i></strong></h4>
+            <br>
+            <canvas id="myChart" style="width:100%;max-width:900px"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+    let transportDepart = [];
+    let transportPlaceDispo = [];
+
+    {% for transport in transports %}
+        transportDepart.push("{{ transport.depart }}-{{ transport.destination }}");
+        transportPlaceDispo.push({{ transport.placesLibres }});
+    {% endfor %}
+
+    // Fonction pour générer des couleurs aléatoires
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 15)];
+        }
+        return color;
+    }
+
+    // Création des données pour le graphique
+    let chartData = {
+        labels: transportDepart,
+        datasets: [{
+            data: transportPlaceDispo,
+            backgroundColor: transportDepart.map(name => getRandomColor())
+        }]
+    };
+
+    // Configuration des options du graphique
+    let chartOptions = {
+        legend: { display: false },
+        title: {
+            display: true,
+            text: "Statistiques des Transports selon les nombres de places disponibles."
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+        
+    };
+
+    // Création du graphique
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions
+    });
+</script>
+
+
+{% endblock %}

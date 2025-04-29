@@ -1,0 +1,21 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}OneUrban | Merci {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="section-tittle text-center mb-100">
+                    <span>| Billet Ajoutée</span>
+                    <h2>Merci de passer votre réservation.</h2>
+                    <h2>La réponse est dans 48h.</h2>
+                    <br><br>                    
+                    <a class="btn btn-dark py-3 px-4" href="{{ path('app_transport_index_front') }}">Retour à la Liste des Transports</a>
+                    <a style="margin-left:10px;" class="btn btn-primary py-3 px-4 me-3 animated fadeIn" href="{{ path('app_billet_user_id', {'id': app.user.id}) }}">Afficher Mes Billets</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

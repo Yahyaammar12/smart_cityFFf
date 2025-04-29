@@ -1,0 +1,25 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Ajouter un Billet{% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="box box-warning">
+            <div class="box-header">
+                <h3 class="box-title">| Ajouter un Billet</h3>
+            </div>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div style="margin-left:40px;width:1160px;" class="alert alert-{{ label }} alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-ban"></i> Attention !</h4>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="box-body">
+                {{ include('billet/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

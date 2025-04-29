@@ -1,0 +1,75 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Détails Transport{% endblock %}
+
+{% block body %}
+    <h1>| Détails Transport</h1>
+    {% set img = transport.image %}
+    </div>
+    <br>
+    <div style="background-color:#fff;">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Image</th>
+                    <td>
+                        <img src="{{ asset(img) }}" style="height: 150px;" alt="Erreur Import.">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        {% if transport.type == 'FLIGHT' %}
+                            <span class="label label-primary">Flight</span>
+                        {% elseif transport.type == 'BUS' %}
+                            <span class="label label-success">Bus</span>
+                        {% elseif transport.type == 'TRAIN' %}
+                            <span class="label label-danger">Train</span>
+                        {% else %}
+                            <span class="label label-warning">{{ transport.type }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Horaire</th>
+                    <td>{{ transport.horaire ? transport.horaire|date('H:i') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Tarif</th>
+                    <td>{{ transport.tarif }}<strong> DT</strong></td>
+                </tr>
+                <tr>
+                    <th>Places Libres</th>
+                    <td>{{ transport.placesLibres }} <strong>places</strong></td>
+                </tr>
+                <tr>
+                    <th>Depart</th>
+                    <td>{{ transport.depart }}</td>
+                </tr>
+                <tr>
+                    <th>Destination</th>
+                    <td>{{ transport.destination }}</td>
+                </tr>
+                <tr>
+                    <th>Company</th>
+                    <td>
+                        <span class="label label-warning">{{ transport.company }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="background-color:#fff;" align="center">
+        <br>
+            <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                <a style="color:#fff;" href="{{ path('app_transport_index') }}">Back To List</a>
+            </button>
+            &nbsp;
+            <button style="margin-top:-50px;margin-left:160px;width:40px;" class="btn btn-block btn-success btn-sm">
+                <a style="color:#fff;" href="{{ path('app_transport_edit', {'id': transport.id}) }}"><i class="fa fa-edit"></i></a>
+            </button>
+            <br>
+        </div>
+    </div>
+
+    
+{% endblock %}

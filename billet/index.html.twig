@@ -1,0 +1,119 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Liste des Billets{% endblock %}
+
+{% block body %}
+    <h1>| Liste des Billets</h1>
+
+    <button style="margin-left:50px;width:150px;" class="btn btn-block btn-primary">
+        <a style="color:#fff;" href="{{ path('app_billet_new') }}"><i class="fa fa-plus"></i> Créer un nouveau</a>
+    </button>
+    <br>
+
+    <div style="background-color:#fff;">
+        <br>
+        <input style="margin-left:80px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+        <br><br>
+        <div style="margin-top:-135px;margin-left:1050px;" class="btn-group">
+            <button type="button" id="actionBtn" class="btn btn-info">Tri Par</button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('app_billet_index') }}" onclick="setActionText(this)">Défaut</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('app_billet_index_sort_date') }}" onclick="setActionText(this)">Date Voyage</a></li>
+                <li><a href="{{ path('app_billet_index_sort_prix') }}" onclick="setActionText(this)">Prix</a></li>
+                <li><a href="{{ path('app_billet_index_sort_statut') }}" onclick="setActionText(this)">Statut</a></li>
+                <li><a href="{{ path('app_billet_index_sort_statutPaiement') }}" onclick="setActionText(this)">Statut de Paiement</a></li>
+            </ul>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date Voyage</th>
+                    <th>Prix</th>
+                    <th>Statut</th>
+                    <th>Statut de Paiement</th>
+                    <th>Transport</th>
+                    <th>Utilisateur</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for billet in billets %}
+                <tr>
+                    <td>{{ billet.dateVoyage ? billet.dateVoyage|date('Y-m-d') : '' }}</td>
+                    <td>{{ billet.prix }} <strong> DT</strong></td>
+                    <td>
+                        {% if billet.status == 'CONFIRMED' %}
+                            <span class="label label-success">Confirmed</span>
+                        {% elseif billet.status == 'CANCELLED' %}
+                            <span class="label label-danger">Cancelled</span>
+                        {% else %}
+                            <span class="label label-warning">{{ billet.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if billet.paymentStatus == 'CASH' %}
+                            <span class="label label-primary">Cash</span>
+                        {% elseif billet.paymentStatus == 'CARD' %}
+                            <span class="label label-warning">Card</span>
+                        {% else %}
+                            <span class="label label-danger">{{ billet.paymentStatus }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ billet.transport.depart }} - {{ billet.transport.destination }}</td>
+                    <td>{{ billet.user.prenom }} {{ billet.user.nom }}</td>
+                    <td>
+                        <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_billet_show', {'id': billet.id}) }}"><i class="fa fa-ellipsis-v"></i></a></button>
+                        &nbsp;
+                        <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm"><a style="color:#fff;" href="{{ path('app_billet_edit', {'id': billet.id}) }}"><i class="fa fa-edit"></i></a></button>
+                        &nbsp;
+                        {{ include('billet/_delete_form.html.twig') }}    
+                        {% if billet.status == 'CONFIRMED' %}
+                            <button style="margin-top:-30px;margin-left:107px;width:30px;" class="btn btn-block btn-warning btn-sm"><a style="color:#fff;" href="/billet/{{ billet.id }}/pdf"><i class="fa fa-print"></i></a></button>
+                        {% endif %}
+                                           
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No Billet Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+<script>
+    function setActionText(element) {
+        const actionBtn = document.getElementById("actionBtn");
+        actionBtn.textContent = element.textContent;
+    }
+</script>
+
+
+<script>
+	function filterTable() {
+        const filter = document.getElementById('searchInput').value.toUpperCase();
+        const rows = document.querySelectorAll('table tr');
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll('td');
+            let visible = false;
+            for (let j = 0; j < cols.length; j++) {
+                const cell = cols[j];
+                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                    visible = true;
+                    break;
+                }
+            }
+            rows[i].style.display = visible ? '' : 'none';
+        }
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+</script>
+
+{% endblock %}

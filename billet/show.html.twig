@@ -1,0 +1,65 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Détails Billet{% endblock %}
+
+{% block body %}
+    <h1>| Détails Billet</h1>
+    <br>
+    <div style="background-color:#fff;">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Date Voyage</th>
+                    <td>{{ billet.dateVoyage ? billet.dateVoyage|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Prix</th>
+                    <td>{{ billet.prix }} <strong> DT</strong></td>
+                </tr>
+                <tr>
+                    <th>Statut</th>
+                    <td>
+                        {% if billet.status == 'CONFIRMED' %}
+                            <span class="label label-success">Confirmed</span>
+                        {% elseif billet.status == 'CANCELLED' %}
+                            <span class="label label-danger">Cancelled</span>
+                        {% else %}
+                            <span class="label label-warning">{{ billet.status }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Statut de Paiement</th>
+                    <td>
+                        {% if billet.paymentStatus == 'CASH' %}
+                            <span class="label label-primary">Cash</span>
+                        {% elseif billet.paymentStatus == 'CARD' %}
+                            <span class="label label-warning">Card</span>
+                        {% else %}
+                            <span class="label label-danger">{{ billet.paymentStatus }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Utilisateur</th>
+                    <td>{{ billet.user.prenom }} {{ billet.user.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Transport</th>
+                    <td>{{ billet.transport.depart }} - {{ billet.transport.destination }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="background-color:#fff;" align="center">
+        <br>
+            <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                <a style="color:#fff;" href="{{ path('app_billet_index') }}">Back To List</a>
+            </button>
+            &nbsp;
+            <button style="margin-top:-50px;margin-left:160px;width:40px;" class="btn btn-block btn-success btn-sm">
+                <a style="color:#fff;" href="{{ path('app_billet_edit', {'id': billet.id}) }}"><i class="fa fa-edit"></i></a>
+            </button>
+            <br>
+        </div>
+    </div>
+{% endblock %}

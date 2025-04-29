@@ -1,0 +1,61 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}OneUrban | Mes Billets{% endblock %}
+
+{% block body %}
+    <h1>| Mes Billets</h1>
+    <button style="margin-top:-80px;margin-left:250px;width:220px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_transport_index_front') }}">Retour à la Liste des Transports</a></button>
+    
+    <br><br>
+
+    <div style="background-color:#fff;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date Voyage</th>
+                    <th>Prix</th>
+                    <th>Statut</th>
+                    <th>Statut de Paiement</th>
+                    <th>Transport</th>
+                    <th>Annuler Billet</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for billet in billets %}
+                <tr>
+                    <td>{{ billet.dateVoyage ? billet.dateVoyage|date('Y-m-d') : '' }}</td>
+                    <td>{{ billet.prix }} <strong> DT</strong></td>
+                    <td>
+                        {% if billet.status == 'CONFIRMED' %}
+                            <span class="btn btn-block btn-success btn-sm">Confirmed</span>
+                        {% elseif billet.status == 'CANCELLED' %}
+                            <span class="btn btn-block btn-danger btn-sm">Cancelled</span>
+                        {% else %}
+                            <span class="btn btn-block btn-warning btn-sm">{{ billet.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if billet.paymentStatus == 'CASH' %}
+                            <span class="btn btn-block btn-primary btn-sm">Cash</span>
+                        {% elseif billet.paymentStatus == 'CARD' %}
+                            <span class="btn btn-block btn-warning btn-sm">Card</span>
+                        {% else %}
+                            <span class="btn btn-block btn-danger btn-sm">{{ billet.paymentStatus }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ billet.transport.depart }} - {{ billet.transport.destination }}</td>
+                    <td>
+                        <button style="width:30px;" class="btn btn-block btn-danger btn-sm"><a style="color:#fff;" href="{{ path('app_billet_annuler', {'id': billet.id}) }}"><i class="fa fa-power-off"></i></a></button>                    
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No Billets Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+
+{% endblock %}

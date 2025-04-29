@@ -1,0 +1,118 @@
+{{ form_start(form,{'attr':{'novalidate':'novalidate'}},{'attr':{'class':'form-horizontal'}}) }}
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.type,"Type :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.type,{'attr':{'class':'form-control'}})}}
+            {% if form_errors(form.type) is not empty %}
+                <div class="form-group has-error">
+                    <label class="form-text text-muted">{{ form_errors(form.type) }}</label>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <br><br><b>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.image,"Image :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.image,{'attr':{'class':'form-control-input'}})}}
+            {% if form_errors(form.image) is not empty %}
+                <div class="form-group has-error">
+                    <label class="form-text text-muted">{{ form_errors(form.image) }}</label>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.horaire,"Horaire :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.horaire,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.horaire) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.horaire) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br><b>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.tarif,"Tarif :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.tarif,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.tarif) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.tarif) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br><b>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.places_libres,"Places Libres :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.places_libres,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.places_libres) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.places_libres) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br><b>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.depart,"Départ :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.depart,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.depart) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.depart) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.destination,"Destination :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.destination,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.destination) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.destination) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.company,"Company :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.company,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.company) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.company) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br><br>
+    <div align="center" class="card-footer">
+        <button style="width:70px;" class="btn btn-block btn-primary btn-sm"><i class="zmdi zmdi-plus"></i>{{ button_label|default('Ajouter') }}</button>
+        <button style="margin-top:-29px;margin-left:200px;width:120px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_transport_index') }}">Consulter Liste</a></button>
+    </div>
+{{ form_end(form) }}
