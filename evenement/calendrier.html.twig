@@ -1,0 +1,35 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Calendrier des Evenements{% endblock %}
+
+{% block body %}
+    <div style="background-color:#fff">
+        <br>
+        <a style="margin-left:20px;" class="btn btn-warning" href="{{ path('app_evenement_index') }}">Retour à la liste</a>
+        <br><br>
+        <div align="center">
+            <h1><strong><i class="fa fa-calendar"></i> | Calendrier des Evenements | <i class="fa fa-calendar"></i></strong></h1>
+        </div>
+        <br>
+        <br>
+
+        <div style="margin-left:130px;width:1000px;" id='calendar'></div>
+    </div>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: '/api/evenements', // route symfony
+        });
+
+        calendar.render();
+    });
+</script>
+{% endblock %}

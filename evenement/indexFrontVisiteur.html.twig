@@ -1,0 +1,39 @@
+{% extends 'baseVisiteur.html.twig' %}
+
+{% block title %}OneUrban | Liste des Evenements{% endblock %}
+
+{% block body %}
+
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <h1 class="mb-3">| Liste des Evenements</h1>
+    </div>
+    <div class="row g-4">
+        {% for evenement in evenements %}
+            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                <a class="cat-item d-block bg-light text-center rounded p-3" href="#">
+                    <div class="rounded p-4">
+                        <div class="icon mb-3">
+                            <i class="fa fa-sun"></i>
+                        </div>
+                        <br>
+                        <span><strong>Nom: </strong>{{ evenement.nom }} </span>
+                        <br>
+                        <span><strong>Date: </strong>{{ evenement.date ? evenement.date|date('Y-m-d') : '' }}</span>
+                        <br>
+                        <span><strong>Heure: </strong>{{ evenement.heure ? evenement.heure|date('H:i') : '' }}</span>
+                        <br>
+                        <span><strong>Localisation: </strong>{{ evenement.localisation }}</span>
+                        <br>
+                        <span><strong>Loisir: </strong>{{ evenement.loisir.nom }}</span>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <br><br>
+    <div style="margin-left:500px;" class="pagination">
+        {% do evenements.setPageRange(6) %}
+        {{knp_pagination_render(evenements, 'pagination.html.twig')}}
+        <br><br><br><br><br>
+    </div>
+{% endblock %}

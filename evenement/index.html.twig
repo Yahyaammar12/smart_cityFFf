@@ -1,0 +1,103 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Liste des Evenements{% endblock %}
+
+{% block body %}
+    <h1>| Liste des Evenements</h1>
+
+    <button style="margin-left:50px;width:150px;" class="btn btn-block btn-primary">
+        <a style="color:#fff;" href="{{ path('app_evenement_new') }}"><i class="fa fa-plus"></i> Créer un nouveau</a>
+    </button>
+    <a style="margin-left:220px;margin-top:-33px;width:220px;" class="btn btn-block btn-primary" href="{{ path('app_calendar_events') }}"><i class="fa fa-calendar"></i> Calendrier des Evenements</a>
+    
+    <br>
+    <div style="background-color:#fff;">
+        <br>
+        <input style="margin-left:80px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+        <br><br>
+        <div style="margin-top:-135px;margin-left:1050px;" class="btn-group">
+            <button type="button" id="actionBtn" class="btn btn-info">Tri Par</button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('app_evenement_index') }}" onclick="setActionText(this)">Défaut</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('app_evenement_index_sort_nom') }}" onclick="setActionText(this)">Nom</a></li>
+                <li><a href="{{ path('app_evenement_index_sort_date') }}" onclick="setActionText(this)">Date</a></li>
+                <li><a href="{{ path('app_evenement_index_sort_heure') }}" onclick="setActionText(this)">Heure</a></li>
+                <li><a href="{{ path('app_evenement_index_sort_localisation') }}" onclick="setActionText(this)">Localisation</a></li>
+            </ul>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Localisation</th>
+                    <th>Moyen de Loisir</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for evenement in evenements %}
+                <tr>
+                    <td>{{ evenement.nom }}</td>
+                    <td>{{ evenement.description }}</td>
+                    <td>{{ evenement.date ? evenement.date|date('Y-m-d') : '' }}</td>
+                    <td>{{ evenement.heure ? evenement.heure|date('H:i') : '' }}</td>
+                    <td>{{ evenement.localisation }}</td>
+                    <td><span class="label label-warning">{{ evenement.loisir.nom }}</span></td>
+                    <td>
+                        <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_evenement_show', {'id': evenement.id}) }}"><i class="fa fa-ellipsis-v"></i></a></button>
+                        &nbsp;
+                        <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm"><a style="color:#fff;" href="{{ path('app_evenement_edit', {'id': evenement.id}) }}"><i class="fa fa-edit"></i></a></button>
+                        &nbsp;
+                        {{ include('evenement/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">No Evenement Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+<script>
+    function setActionText(element) {
+        const actionBtn = document.getElementById("actionBtn");
+        actionBtn.textContent = element.textContent;
+    }
+</script>
+
+
+
+<script>
+	function filterTable() {
+        const filter = document.getElementById('searchInput').value.toUpperCase();
+        const rows = document.querySelectorAll('table tr');
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll('td');
+            let visible = false;
+            for (let j = 0; j < cols.length; j++) {
+                const cell = cols[j];
+                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                    visible = true;
+                    break;
+                }
+            }
+            rows[i].style.display = visible ? '' : 'none';
+        }
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+</script>
+
+{% endblock %}

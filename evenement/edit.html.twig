@@ -1,0 +1,16 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Modifier un Evenement{% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="box-header">
+                <h3 class="box-title">| Modifier un Evenement</h3>
+            </div>
+            <div class="box-body">
+                {{ include('evenement/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

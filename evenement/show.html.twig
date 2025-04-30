@@ -1,0 +1,46 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Détails Evenement{% endblock %}
+
+{% block body %}
+    <h1>| Détails Evenement</h1>
+    <br>
+    <div style="background-color:#fff;">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ evenement.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ evenement.description }}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ evenement.date ? evenement.date|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Heure</th>
+                    <td>{{ evenement.heure ? evenement.heure|date('H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Localisation</th>
+                    <td>{{ evenement.localisation }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="background-color:#fff;" align="center">
+        <br>
+            <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                <a style="color:#fff;" href="{{ path('app_evenement_index') }}">Back To List</a>
+            </button>
+            &nbsp;
+            <button style="margin-top:-50px;margin-left:160px;width:40px;" class="btn btn-block btn-success btn-sm">
+                <a style="color:#fff;" href="{{ path('app_evenement_edit', {'id': evenement.id}) }}"><i class="fa fa-edit"></i></a>
+            </button>
+            <br>
+        </div>
+    </div>
+
+{% endblock %}

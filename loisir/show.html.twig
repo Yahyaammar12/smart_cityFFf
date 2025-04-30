@@ -1,0 +1,56 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Détails Moyen de Loisir{% endblock %}
+
+{% block body %}
+    <h1>| Détails Moyen de Loisir</h1>
+    <br>
+    <div style="background-color:#fff;">
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ loisir.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        {% if loisir.type == 'SPORT' %}
+                            <span class="label label-success">Sport</span>
+                        {% elseif loisir.type == 'CULTURE' %}
+                            <span class="label label-warning">Culture</span>
+                        {% elseif loisir.type == 'LEISURE' %}
+                            <span class="label label-primary">Leisure</span>
+                        {% else %}
+                            <span class="label label-danger">{{ loisir.type }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Localisation</th>
+                    <td>{{ loisir.localisation }}</td>
+                </tr>
+                <tr>
+                    <th>Horaire de Travail</th>
+                    <td>{{ loisir.horaireTravail }}</td>
+                </tr>
+                <tr>
+                    <th>Utilisateur</th>
+                    <td>{{ loisir.user.nom }} {{ loisir.user.prenom }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="background-color:#fff;" align="center">
+        <br>
+            <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                <a style="color:#fff;" href="{{ path('app_loisir_index') }}">Back To List</a>
+            </button>
+            &nbsp;
+            <button style="margin-top:-50px;margin-left:160px;width:40px;" class="btn btn-block btn-success btn-sm">
+                <a style="color:#fff;" href="{{ path('app_loisir_edit', {'id': loisir.id}) }}"><i class="fa fa-edit"></i></a>
+            </button>
+            <br>
+        </div>
+    </div>
+{% endblock %}

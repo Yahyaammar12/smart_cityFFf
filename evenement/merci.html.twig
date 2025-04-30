@@ -1,0 +1,20 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %} Merci {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="section-tittle text-center mb-100">
+                    <span>| Evenement Ajoutée</span>
+                    <h2>Merci d'ajouter votre evenement.</h2>
+                    <h2>La réponse est dans 48h.</h2>
+                    <br><br>
+                    <a class="btn btn-dark py-3 px-4" href="{{ path('app_evenement_index_front') }}">Consulter la Liste des Evenements</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
