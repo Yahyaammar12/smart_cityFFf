@@ -1,0 +1,80 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Statistiques des Centre Médicaux{% endblock %}
+
+
+{% block body %}
+
+<div align="center" style="background-color:#fff;" class="col-lg-12 grid-margin stretch-card">
+    <br>
+    <a style="margin-left:-1115px;" class="btn btn-warning" href="{{ path('app_centremedicale_index') }}">Retour à la liste</a>
+    <br><br>
+    <div align="center" style="background-color:#fff;" class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4><strong><i class="fa fa-bar-chart"></i>  Statistiques des Centre Médicaux selon les nombres des rendez vous  <i class="fa fa-bar-chart"></i></strong></h4>
+                <br>
+                <canvas id="myChart" style="width:100%;max-width:900px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+    let centreNames = [];
+    let rdvCounts = [];
+
+    {% for row in number_rdv %}
+        centreNames.push("{{ row.centre_name }}");
+        rdvCounts.push({{ row.rdv_count }});
+    {% endfor %}
+
+    // Fonction pour générer des couleurs aléatoires
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 15)];
+        }
+        return color;
+    }
+
+    // Création des données pour le graphique
+    let chartData = {
+        labels: centreNames,
+        datasets: [{
+            data: rdvCounts,
+            backgroundColor: centreNames.map(name => getRandomColor())
+        }]
+    };
+
+    // Configuration des options du graphique
+    let chartOptions = {
+        legend: { display: false },
+        title: {
+            display: true,
+            text: "Statistiques des Transports selon les nombres des rendez vous."
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+        
+    };
+
+    // Création du graphique
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions
+    });
+</script>
+
+
+{% endblock %}

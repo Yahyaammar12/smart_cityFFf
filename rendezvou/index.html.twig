@@ -1,0 +1,117 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Liste des Rendez Vous{% endblock %}
+
+{% block body %}
+    <h1>| Liste des Rendez Vous</h1>
+
+    <button style="margin-left:50px;width:150px;" class="btn btn-block btn-primary">
+        <a style="color:#fff;" href="{{ path('app_rendezvou_new') }}"><i class="fa fa-plus"></i> Créer un nouveau</a>
+    </button>
+    <a style="margin-left:220px;margin-top:-33px;width:220px;" class="btn btn-block btn-primary" href="{{ path('app_calendar') }}"><i class="fa fa-calendar"></i> Calendrier des Rendez Vous</a>
+    
+    {% if msg_notif!=null %}
+        <script type="text/javascript">
+            alert("{{ msg_notif }}");
+        </script>
+    {% endif %}
+    
+    <br><br>
+    <div style="background-color:#fff;">
+        <br>
+        <input style="margin-left:80px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+        <br><br>
+        <div style="margin-top:-135px;margin-left:1050px;" class="btn-group">
+            <button type="button" id="actionBtn" class="btn btn-info">Tri Par</button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('app_rendezvou_index') }}" onclick="setActionText(this)">Défaut</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('app_rendezvou_index_sort_date') }}" onclick="setActionText(this)">Date</a></li>
+                <li><a href="{{ path('app_rendezvou_index_sort_heure') }}" onclick="setActionText(this)">Heure</a></li>
+                <li><a href="{{ path('app_rendezvou_index_sort_statut') }}" onclick="setActionText(this)">Statut</a></li>
+                <li><a href="{{ path('app_rendezvou_index_sort_nomMedecin') }}" onclick="setActionText(this)">Nom Médecin</a></li>
+            </ul>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Statut</th>
+                    <th>Nom Médecin</th>
+                    <th>Centre Médical</th>
+                    <th>Nom de Patient</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for rendezvou in rendezvous %}
+                <tr>
+                    <td>{{ rendezvou.date ? rendezvou.date|date('Y-m-d') : '' }}</td>
+                    <td>{{ rendezvou.heure ? rendezvou.heure|date('H:i:s') : '' }}</td>
+                    <td>
+                        {% if rendezvou.status == 'Annulé' %}
+                            <span class="label label-danger">Annulé</span>
+                        {% elseif rendezvou.status == 'Confirmé' %}
+                            <span class="label label-success">Confirmé</span>
+                        {% elseif rendezvou.status == 'En Attente' %}
+                            <span class="label label-warning">En Attente</span>
+                        {% else %}
+                            <span class="label label-primary">{{ rendezvou.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td><strong>Dr. </strong>{{ rendezvou.nomMedecin }}</td>
+                    <td>{{ rendezvou.centremedicale.nom }}</td>
+                    <td>{{ rendezvou.user.nom }} {{ rendezvou.user.prenom }}</td>
+                    <td>
+                        <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_rendezvou_show', {'id': rendezvou.id}) }}"><i class="fa fa-ellipsis-v"></i></a></button>
+                        &nbsp;
+                        <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm"><a style="color:#fff;" href="{{ path('app_rendezvou_edit', {'id': rendezvou.id}) }}"><i class="fa fa-edit"></i></a></button>
+                        &nbsp;
+                        {{ include('rendezvou/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No Rendez Vous Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+<script>
+    function setActionText(element) {
+        const actionBtn = document.getElementById("actionBtn");
+        actionBtn.textContent = element.textContent;
+    }
+</script>
+
+
+
+<script>
+	function filterTable() {
+        const filter = document.getElementById('searchInput').value.toUpperCase();
+        const rows = document.querySelectorAll('table tr');
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll('td');
+            let visible = false;
+            for (let j = 0; j < cols.length; j++) {
+                const cell = cols[j];
+                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                    visible = true;
+                    break;
+                }
+            }
+            rows[i].style.display = visible ? '' : 'none';
+        }
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+</script>
+
+{% endblock %}

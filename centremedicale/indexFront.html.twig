@@ -1,0 +1,48 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}OneUrban | Liste des Centre Médicaux{% endblock %}
+
+{% block body %}
+
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <h1 class="mb-3">| Liste des Centre Médicaux</h1>
+        <a style="margin-left:10px;" class="btn btn-primary py-2 px-4 me-3 animated fadeIn" href="{{ path('app_rendezvou_user_id', {'id': app.user.id}) }}">Afficher Mes Rendez Vous</a>
+    </div>
+    <div class="row g-4">
+        {% for centremedicale in centremedicales %}
+            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                <a class="cat-item d-block bg-light text-center rounded p-3" href="#">
+                    <div class="rounded p-4">
+                        <div class="icon mb-3">
+                            <i class="fa fa-hospital"></i>
+                        </div>
+                        <br>
+                        <span><strong>Nom: </strong>{{ centremedicale.nom }} </span>
+                        <br>
+                        <span><strong>Type: </strong>{{ centremedicale.type }}</span>
+                        <br>
+                        <span><strong>Localisation: </strong>{{ centremedicale.localisation}}</span>
+                        <br>
+                        <span>
+                            <strong>Disponible: </strong>
+                            {% if centremedicale.disponibilite == true %}
+                                <span class="label label-success">Yes</span>
+                            {% elseif centremedicale.disponibilite == false %}
+                                <span class="label label-danger">No</span>
+                            {% else %}
+                                <span class="label label-warning">{{ centremedicale.disponibilite }}</span>
+                            {% endif %}
+                        </span>
+                        <a style="margin-left:15px;" class="btn btn-dark py-3 px-4" href="{{ path('app_rendezvou_new_front', {'id': centremedicale.id}) }}">Ajouter un Rendez Vous</a>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <br><br>
+    <div style="margin-left:500px;" class="pagination">
+        {% do centremedicales.setPageRange(8) %}
+        {{knp_pagination_render(centremedicales, 'pagination.html.twig')}}
+        <br><br><br><br><br>
+    </div>
+{% endblock %}

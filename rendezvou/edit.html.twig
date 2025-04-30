@@ -1,0 +1,16 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Modifier un Rendez Vous {% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="box-header">
+                <h3 class="box-title">| Modifier un Rendez Vous</h3>
+            </div>
+            <div class="box-body">
+                {{ include('rendezvou/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

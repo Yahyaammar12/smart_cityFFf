@@ -1,0 +1,16 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Modifier un Centre Médical{% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="box-header">
+                <h3 class="box-title">| Modifier un Centre Médical</h3>
+            </div>
+            <div class="box-body">
+                {{ include('centremedicale/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

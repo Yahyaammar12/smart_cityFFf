@@ -1,0 +1,54 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}OneUrban | Mes Rendez Vous{% endblock %}
+
+{% block body %}
+    <h1>| Mes Rendez Vous</h1>
+    <button style="margin-top:-80px;margin-left:390px;width:280px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_centremedicale_index_front') }}">Retour à la Liste des Centre Médicaux</a></button>
+    
+    <br><br>
+    <div style="background-color:#fff;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Statut</th>
+                    <th>Nom Medecin</th>
+                    <th>Centre Medicale</th>
+                    <th>Annuler Rendez Vous</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for rendezvou in rendezvous %}
+                <tr>
+                    <td>{{ rendezvou.date ? rendezvou.date|date('Y-m-d') : '' }}</td>
+                    <td>{{ rendezvou.heure ? rendezvou.heure|date('H:i:s') : '' }}</td>
+                    <td>
+                        {% if rendezvou.status == 'Annulé' %}
+                            <span class="btn btn-block btn-danger btn-sm">Annulé</span>
+                        {% elseif rendezvou.status == 'Confirmé' %}
+                            <span class="btn btn-block btn-success btn-sm">Confirmé</span>
+                        {% elseif rendezvou.status == 'En Attente' %}
+                            <span class="btn btn-block btn-warning btn-sm">En Attente</span>
+                        {% else %}
+                            <span class="btn btn-block btn-primary btn-sm">{{ rendezvou.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td><strong>Dr. </strong>{{ rendezvou.nomMedecin }}</td>
+                    <td>{{ rendezvou.centremedicale.nom }}</td>
+                    <td>
+                        <button style="width:30px;" class="btn btn-block btn-danger btn-sm"><a style="color:#fff;" href="{{ path('app_rendezvou_annuler', {'id': rendezvou.id}) }}"><i class="fa fa-ban"></i></a></button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No Rendez Vous Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+
+{% endblock %}

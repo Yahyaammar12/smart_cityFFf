@@ -1,0 +1,50 @@
+security:
+  enable_authenticator_manager: true
+
+  password_hashers:
+    App\Entity\User:
+      algorithm: bcrypt
+
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    main:
+      lazy: true
+      provider: app_user_provider
+      custom_authenticator: App\security\UserAuthenticator
+      entry_point: App\security\UserAuthenticator
+
+      form_login:
+        login_path: login
+        check_path: login
+        enable_csrf: true
+        username_parameter: _username
+        password_parameter: _password
+        failure_path: login
+
+      logout:
+        path: /logout
+        target: login
+
+      remember_me:
+        secret: "%kernel.secret%"
+        lifetime: 604800 # 1 week in seconds
+        path: /
+
+  access_control:
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/forgot-password, roles: PUBLIC_ACCESS }
+    - { path: ^/register, roles: PUBLIC_ACCESS }
+    - { path: /reset-password, roles: PUBLIC_ACCESS }
+    - { path: /visiteur, roles: PUBLIC_ACCESS }
+    - { path: ^/front, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/back, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^.*/front, roles: IS_AUTHENTICATED_FULLY }

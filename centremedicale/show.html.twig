@@ -1,0 +1,60 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Détails Centre Médical{% endblock %}
+
+{% block body %}
+    <h1>| Détail Centre Médical </h1>
+    <br>
+    <div style="background-color:#fff;">
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ centremedicale.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        {% if centremedicale.type == 'HOSPITAL' %}
+                            <span class="label label-primary">Hospital</span>
+                        {% elseif centremedicale.type == 'CLINIC' %}
+                            <span class="label label-success">Clinic</span>
+                        {% elseif centremedicale.type == 'PHARMACY' %}
+                            <span class="label label-warning">Pharmacy</span>
+                        {% else %}
+                            <span class="label label-danger">{{ centremedicale.type }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Localisation</th>
+                    <td>{{ centremedicale.localisation }}</td>
+                </tr>
+                <tr>
+                    <th>Disponibilite</th>
+                    <td>
+                        {% if centremedicale.disponibilite == true %}
+                            <span class="label label-success">Yes</span>
+                        {% elseif centremedicale.disponibilite == false %}
+                            <span class="label label-danger">No</span>
+                        {% else %}
+                            <span class="label label-warning">{{ centremedicale.disponibilite }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="background-color:#fff;" align="center">
+        <br>
+            <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                <a style="color:#fff;" href="{{ path('app_centremedicale_index') }}">Back To List</a>
+            </button>
+            &nbsp;
+            <button style="margin-top:-50px;margin-left:160px;width:40px;" class="btn btn-block btn-success btn-sm">
+                <a style="color:#fff;" href="{{ path('app_centremedicale_edit', {'id': centremedicale.id}) }}"><i class="fa fa-edit"></i></a>
+            </button>
+            <br>
+        </div>
+    </div>
+{% endblock %}

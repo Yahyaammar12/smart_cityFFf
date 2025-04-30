@@ -1,0 +1,140 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Calendrier des Rendez Vous{% endblock %}
+
+{% block cssCalendar %}
+    <style>
+        #calendrier {
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div style="background-color:#fff">
+        <br>
+        <a style="margin-left:20px;" class="btn btn-warning" href="{{ path('app_rendezvou_index') }}">Retour à la liste</a>
+        <br><br>
+        <div align="center">
+            <h1><strong><i class="fa fa-calendar"></i> | Calendrier des Rendez Vous | <i class="fa fa-calendar"></i></strong></h1>
+        </div>
+        <br>
+        <br>
+
+        <!-- Custom Modal (Initially hidden) -->
+        <div id="customModal" class="custom-modal" style="background-color:#fff;display: none;">
+            <span style="margin-left:1210px;width:30px;" class="btn btn-block btn-danger btn-sm" id="closeModal">&times;</span>
+            <div class="custom-modal-content">
+                <br>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Rendez Vous</th>
+                            <td><span id="modalTitle"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td><span id="modalDate"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Heure</th>
+                            <td><span id="modalHeure"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Statut</th>
+                            <td>
+                                <span id="modalStatut"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Nom de Medecin</th>
+                            <td><span id="modalMedecin"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <td><span id="modalUser"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+        </div>
+        <br>
+
+        <div id="calendrier">
+            <div id="onClick"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendrier');
+            var events = {{ data|raw }}; // Ensure that 'data' is correctly passed and formatted
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                initialDate: new Date(),
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: events,
+                editable: true,
+                eventResizableFromStart: false,
+
+                eventDidMount: function(info) {
+                    const tooltip = `${info.event.title} - ${info.event.extendedProps.heure} - ${info.event.extendedProps.statut}`;
+                    info.el.setAttribute("title", tooltip);
+                },
+
+                eventClick: function(info) {
+                    info.jsEvent.preventDefault(); // Prevent default browser action (e.g., navigation)
+
+                    // Fill the modal with event details
+                    document.getElementById('modalTitle').innerText = info.event.title;
+                    document.getElementById('modalDate').innerText = info.event.start.toLocaleDateString();
+                    document.getElementById('modalHeure').innerText = info.event.extendedProps.heure;
+                    document.getElementById('modalMedecin').innerText = info.event.extendedProps.nomMedecin;
+                    document.getElementById('modalStatut').innerText = info.event.extendedProps.statut;
+                    document.getElementById('modalUser').innerText = info.event.extendedProps.user;
+
+                    // Check if the status is "En Attente" and apply the corresponding label class
+                    var statut = info.event.extendedProps.statut;
+                    var statutSpan = document.getElementById('modalStatut');
+
+                    if (statut === 'En Attente') {
+                        statutSpan.innerHTML = `<span class="label label-warning">${statut}</span>`;
+                    } else if (statut === 'Annulé') {
+                        statutSpan.innerHTML = `<span class="label label-danger">${statut}</span>`;
+                    } else if (statut === 'Confirmé') {
+                        statutSpan.innerHTML = `<span class="label label-success">${statut}</span>`;
+                    } else {
+                        statutSpan.innerText = statut;
+                    }
+
+                    // Show the modal
+                    document.getElementById('customModal').style.display = 'block';
+                }
+            });
+
+            calendar.render();
+        });
+
+        // Modal Close Button and Click Outside Logic
+        document.addEventListener('DOMContentLoaded', function () {
+            // Close modal when the user clicks on the close button (X)
+            document.getElementById('closeModal').onclick = function () {
+                document.getElementById('customModal').style.display = "none";
+            }
+
+            // Close modal if clicked outside of the modal content
+            window.onclick = function (event) {
+                if (event.target === document.getElementById('customModal')) {
+                    document.getElementById('customModal').style.display = "none";
+                }
+            }
+        });
+    </script>
+{% endblock %}
