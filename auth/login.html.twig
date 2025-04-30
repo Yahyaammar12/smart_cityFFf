@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OneUrban | Login{% endblock %}
+
+{% block auth %}
+<div class="login-box">
+    <div class="login-logo">
+        <a href="/"><b>One</b>Urban</a>
+    </div>
+    <div class="login-box-body">
+        <p class="login-box-msg">Connectez-vous pour démarrer votre session</p>
+        <div class="login-container">
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            {% for flash_message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+
+            <form method="post" action="{{ path('login') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+
+                <div class="form-group has-feedback">
+                    <input class="form-control" type="email" id="email" name="_username" autofocus placeholder="Email" />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                        
+                <div class="form-group has-feedback">
+                    <input class="form-control" type="password" id="password" name="_password" placeholder="Mot De Passe" />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+
+                <!-- ✅ Google reCAPTCHA -->
+                <div align="center" class="form-group">
+                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+                </div>
+
+                <a href="{{ path('forgot_password') }}">Mot de passe oublié ?</a>
+                <br><br>
+
+                <div class="row">
+                    <div class="col-xs-8">    
+                        <div class="checkbox icheck">
+                            <label>
+                                <input type="checkbox" name="_remember_me" checked/> 
+                                Se souvenir de moi
+                            </label>
+                        </div>                        
+                    </div>
+                    <div class="col-xs-4">
+                        <button style="margin-left:-33px;width:120px;" type="submit" class="btn btn-primary btn-block btn-flat">Se Connecter</button>
+                    </div>
+                </div>
+            </form>
+
+            <br>
+            <div align="center" class="create-account">
+                <p>Vous n'avez pas de compte ? <a href="{{ path('app_register') }}">Créer un.</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Script Google reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+{% endblock %}

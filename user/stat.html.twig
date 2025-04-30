@@ -1,0 +1,78 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Statistiques des Utilisateurs{% endblock %}
+
+
+{% block body %}
+
+<div align="center" style="background-color:#fff;" class="col-lg-12 grid-margin stretch-card">
+    <br>
+    <a style="margin-left:-1115px;" class="btn btn-warning" href="{{ path('app_user_index') }}">Retour à la liste</a>
+    <br><br>
+    <div class="card">
+        <div class="card-body">
+            <h4><strong><i class="fa fa-bar-chart"></i>  Statistiques des Utilisateurs selon la durée de leurs Membership (En Mois)  <i class="fa fa-bar-chart"></i></strong></h4>
+            <br>
+            <canvas id="myChart" style="width:100%;max-width:900px"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+    let userNames = [];
+    let membershipCounts = [];
+
+    // Loop through the membership data passed from the controller
+    {% for row in membershipData %}
+        userNames.push("{{ row.user_name }}");
+        membershipCounts.push({{ row.membership_count }});
+    {% endfor %}
+
+    // Function to generate random colors
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 15)];
+        }
+        return color;
+    }
+
+    // Create chart data
+    let chartData = {
+        labels: userNames,  // Use user names as labels
+        datasets: [{
+            data: membershipCounts,  // Use membership counts as data
+            backgroundColor: userNames.map(name => getRandomColor())  // Generate random colors
+        }]
+    };
+
+    // Chart options
+    let chartOptions = {
+        legend: { display: false },
+        title: {
+            display: true,
+            text: "Statistiques des Membres selon la durée d'adhésion."
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    // Create the chart
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Détails Utilisateur {% endblock %}
+
+{% block body %}
+    <h1>| Détails Utilisateur <span class="label label-success">{{ user.prenom }} {{ user.nom }}</span></h1>
+    <br>
+    <div style="background-color:#fff;">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ user.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ user.prenom }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Numéro de Carte</th>
+                    <td>{{ user.numCarte[0:4] ~ ' ' ~ user.numCarte[4:4] ~ ' ' ~ user.numCarte[8:4] ~ ' ' ~ user.numCarte[12:4] }}</td>
+                </tr>
+                <tr>
+                    <th>Adresse</th>
+                    <td>{{ user.adresse }}</td>
+                </tr>
+                <tr>
+                    <th>Rôle</th>
+                    <td>
+                        {% if user.role == 'PATIENT' %}
+                            <span class="label label-success">Patient</span>
+                        {% elseif user.role == 'MEDECIN' %}
+                                <span class="label label-info">Medecin</span>
+                        {% elseif user.role == 'ADMIN' %}
+                            <span class="label label-danger">Admin</span>
+                        {% elseif user.role == 'CLIENT' %}
+                                <span class="label label-primary">Client</span>
+                        {% else %}
+                            <span class="label label-warning">{{ user.role }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Verifiée ? </th>
+                    <td>
+                        {% if user.isVerified == true %}
+                            <span class="label label-success">Yes</span>
+                        {% elseif user.isVerified == false %}
+                            <span class="label label-danger">No</span>
+                        {% else %}
+                            <span class="label label-warning">{{ user.isVerified }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Activé ? </th>
+                    <td>
+                        {% if user.actif == true %}
+                            <span class="label label-success">Yes</span>
+                        {% elseif user.actif == false %}
+                            <span class="label label-danger">No</span>
+                        {% else %}
+                            <span class="label label-warning">{{ user.actif }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Date de Création </th>
+                    <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="background-color:#fff;" align="center">
+        <br>
+            <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                <a style="color:#fff;" href="{{ path('app_user_index') }}">Back To List</a>
+            </button>
+            <br>
+        </div>
+    </div>
+{% endblock %}
+

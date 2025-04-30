@@ -1,0 +1,139 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Liste des Utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>| Liste des Utilisateurs</h1>
+    <br>
+
+    <div style="background-color:#fff;">
+        <br>
+        <input style="margin-left:30px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+        <br><br>
+        <div style="margin-top:-135px;margin-left:1000px;" class="btn-group">
+            <button type="button" id="actionBtn" class="btn btn-info">Tri Par</button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('app_user_index') }}" onclick="setActionText(this)">Défaut</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('app_user_index_sort_nom') }}" onclick="setActionText(this)">Nom</a></li>
+                <li><a href="{{ path('app_user_index_sort_date') }}" onclick="setActionText(this)">Date</a></li>
+                <li><a href="{{ path('app_user_index_sort_role') }}" onclick="setActionText(this)">Role</a></li>
+                <li><a href="{{ path('app_user_index_sort_adresse') }}" onclick="setActionText(this)">Adresse</a></li>
+            </ul>
+        </div>
+        <a style="margin-top:-175px;margin-left:1100px;" class="btn btn-warning" href="{{ path('app_user_index_stat') }}">Statistiques</a>
+        <table class="table" id="userTable">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Numéro de Carte</th>
+                    <th>Address</th>
+                    <th>Rôle</th>
+                    <th>Verifiée</th>
+                    <th>Activé</th>
+                    <th>Date de Création</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.numCarte[0:4] ~ ' ' ~ user.numCarte[4:4] ~ ' ' ~ user.numCarte[8:4] ~ ' ' ~ user.numCarte[12:4] }}</td>
+                        <td>{{ user.adresse }}</td>
+                        <td>
+                            {% if user.role == 'PATIENT' %}
+                                <span class="label label-success">Patient</span>
+                            {% elseif user.role == 'MEDECIN' %}
+                                <span class="label label-info">Medecin</span>
+                            {% elseif user.role == 'ADMIN' %}
+                                <span class="label label-danger">Admin</span>
+                            {% elseif user.role == 'CLIENT' %}
+                                <span class="label label-primary">Client</span>
+                            {% else %}
+                                <span class="label label-warning">{{ user.role }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.isVerified == true %}
+                                <span class="label label-success">Yes</span>
+                            {% elseif user.isVerified == false %}
+                                <span class="label label-danger">No</span>
+                            {% else %}
+                                <span class="label label-warning">{{ user.isVerified }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.actif == true %}
+                                <span class="label label-success">Yes</span>
+                            {% elseif user.actif == false %}
+                                <span class="label label-danger">No</span>
+                            {% else %}
+                                <span class="label label-warning">{{ user.actif }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_user_show', {'id': user.id}) }}"><i class="fa fa-ellipsis-v"></i></a></button>
+                            &nbsp;
+                            <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-warning btn-sm"><a style="color:#fff;" href="{{ path('app_user_ban', {'id': user.id}) }}"><i class="fa fa-ban"></i></a></button>
+                            &nbsp;
+                            {{ include('user/_delete_form.html.twig') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="12">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="margin-left:500px;" class="pagination">
+            {% do users.setPageRange(5) %}
+            {{knp_pagination_render(users, 'pagination.html.twig')}}
+            <br><br><br><br><br>
+        </div>
+    </div>
+    
+
+
+
+<script>
+    function setActionText(element) {
+        const actionBtn = document.getElementById("actionBtn");
+        actionBtn.textContent = element.textContent;
+    }
+</script>
+
+
+
+
+<script>
+	function filterTable() {
+        const filter = document.getElementById('searchInput').value.toUpperCase();
+        const rows = document.querySelectorAll('table tr');
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll('td');
+            let visible = false;
+            for (let j = 0; j < cols.length; j++) {
+                const cell = cols[j];
+                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                    visible = true;
+                    break;
+                }
+            }
+            rows[i].style.display = visible ? '' : 'none';
+        }
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+</script>
+
+{% endblock %}

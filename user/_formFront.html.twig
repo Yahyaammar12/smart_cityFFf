@@ -1,0 +1,89 @@
+{{ form_start(form,{'attr':{'novalidate':'novalidate'}},{'attr':{'class':'form-horizontal'}}) }}
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.nom,"Nom :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.nom,{'attr':{'class':'form-control'}})}}
+            {% if form_errors(form.nom) is not empty %}
+                <div class="form-group has-error">
+                    <label class="form-text text-muted">{{ form_errors(form.nom) }}</label>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <br><br><br>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.prenom,"Prénom :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.prenom,{'attr':{'class':'form-control'}})}}
+            {% if form_errors(form.prenom) is not empty %}
+                <div class="form-group has-error">
+                    <label class="form-text text-muted">{{ form_errors(form.prenom) }}</label>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.email,"Email :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.email,{'attr':{'class':'form-control'}})}}
+            {% if form_errors(form.email) is not empty %}
+                <div class="form-group has-error">
+                    <label class="form-text text-muted">{{ form_errors(form.email) }}</label>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.num_carte,"Numéro de Carte :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.num_carte,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.num_carte) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.num_carte) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.adresse,"Adresse :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.adresse,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.adresse) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.adresse) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <div class="form-group">
+        <div class="col col-md-3">
+            <label>{{ form_label(form.motDePasse,"Mot De Passe :") }}</label>
+        </div>
+        <div class="col-12 col-md-9">
+            {{ form_widget(form.motDePasse,{'attr':{'class':'form-control'}})}}
+                {% if form_errors(form.motDePasse) is not empty %}
+                    <div class="form-group has-error">
+                        <label class="form-text text-muted">{{ form_errors(form.motDePasse) }}</label>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <br><br><br>
+    <div align="center" class="card-footer">
+        <button style="width:70px;" class="btn btn-block btn-primary btn-sm"><i class="zmdi zmdi-plus"></i>{{ button_label|default('Ajouter') }}</button>
+    </div>
+{{ form_end(form) }}
