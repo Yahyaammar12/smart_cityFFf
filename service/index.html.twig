@@ -1,0 +1,97 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Liste des Services{% endblock %}
+
+{% block body %}
+    <h1>| Liste des Services</h1>
+
+    <button style="margin-left:50px;width:150px;" class="btn btn-block btn-primary">
+        <a style="color:#fff;" href="{{ path('app_service_new') }}"><i class="fa fa-plus"></i> Créer une nouvelle</a>
+    </button>
+    <br>
+    <div style="background-color:#fff;">
+        <br>
+        <input style="margin-left:30px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+        <br><br>
+        <div style="margin-top:-135px;margin-left:1000px;" class="btn-group">
+            <button type="button" id="actionBtn" class="btn btn-info">Tri Par</button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('app_service_index') }}" onclick="setActionText(this)">Défaut</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('app_service_index_sort_nom') }}" onclick="setActionText(this)">Nom</a></li>
+                <li><a href="{{ path('app_service_index_sort_type') }}" onclick="setActionText(this)">Type</a></li>
+                <li><a href="{{ path('app_service_index_sort_description') }}" onclick="setActionText(this)">Description</a></li>
+            </ul>
+        </div>
+        <a style="margin-top:-175px;margin-left:1100px;" class="btn btn-warning" href="{{ path('app_service_index_stat') }}">Statistiques</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for service in services %}
+                {% set img = service.imagePath %}
+                <tr>
+                    <td>{{ service.nom }}</td>
+                    <td>
+                        {% if service.type == 'HEALTHCARE' %}
+                            <span class="label label-primary">Healthcare</span>
+                        {% elseif service.type == 'TRANSPORT' %}
+                            <span class="label label-success">Transport</span>
+                        {% elseif service.type == 'TOURISM' %}
+                            <span class="label label-danger">Tourism</span>
+                        {% else %}
+                            <span class="label label-warning">{{ service.type }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ service.description }}</td>
+                    <td><img src="{{ asset(img) }}" style="height: 70px;" alt="No File Found."></td>
+                    <td>
+                        <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_service_show', {'id': service.id}) }}"><i class="fa fa-ellipsis-v"></i></a></button>
+                        &nbsp;
+                        <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm"><a style="color:#fff;" href="{{ path('app_service_edit', {'id': service.id}) }}"><i class="fa fa-edit"></i></a></button>
+                        &nbsp;
+                        {{ include('service/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No Service Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+<script>
+	function filterTable() {
+        const filter = document.getElementById('searchInput').value.toUpperCase();
+        const rows = document.querySelectorAll('table tr');
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll('td');
+            let visible = false;
+            for (let j = 0; j < cols.length; j++) {
+                const cell = cols[j];
+                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                    visible = true;
+                    break;
+                }
+            }
+            rows[i].style.display = visible ? '' : 'none';
+        }
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+</script>
+
+{% endblock %}

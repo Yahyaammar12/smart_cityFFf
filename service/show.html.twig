@@ -1,0 +1,52 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Détails Service{% endblock %}
+
+{% block body %}
+    <h1>| Détails Service</h1>
+    <br>
+    {% set img = service.imagePath %}
+    <div style="background-color:#fff;">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ service.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        {% if service.type == 'HEALTHCARE' %}
+                            <span class="label label-primary">Healthcare</span>
+                        {% elseif service.type == 'TRANSPORT' %}
+                            <span class="label label-success">Transport</span>
+                        {% elseif service.type == 'TOURISM' %}
+                            <span class="label label-danger">Tourism</span>
+                        {% else %}
+                            <span class="label label-warning">{{ service.type }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td><img src="{{ asset(img) }}" style="height: 150px;" alt="No File Found."></td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ service.description }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="background-color:#fff;" align="center">
+        <br>
+            <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                <a style="color:#fff;" href="{{ path('app_service_index') }}">Back To List</a>
+            </button>
+            &nbsp;
+            <button style="margin-top:-50px;margin-left:160px;width:40px;" class="btn btn-block btn-success btn-sm">
+                <a style="color:#fff;" href="{{ path('app_service_edit', {'id': service.id}) }}"><i class="fa fa-edit"></i></a>
+            </button>
+            <br>
+        </div>
+    </div>
+{% endblock %}

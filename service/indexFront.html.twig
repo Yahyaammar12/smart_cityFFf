@@ -1,0 +1,33 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}OneUrban | Liste des Services{% endblock %}
+
+{% block body %}
+
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <h1 class="mb-3">| Liste des Services</h1>
+        <a style="margin-left:10px;" class="btn btn-primary py-2 px-4 me-3 animated fadeIn" href="{{ path('app_demandeservice_user_id', {'id': app.user.id}) }}">Afficher Mes Demandes Service</a>
+    </div>
+    <div class="row g-4">
+        {% for service in services %}
+            {% set img = service.imagePath %}
+            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                <a class="cat-item d-block bg-light text-center rounded p-3" href="#">
+                    <div class="rounded p-4">
+                        <div class="icon mb-3">
+                            <img class="img-fluid" src="{{ asset(img) }}" style="height: 70px;" alt="No File Found.">
+                        </div>
+                        <h6>{{ service.nom }}</h6>
+                        <span>{{ service.type }}</span>
+                        <a style="margin-left:20px;" class="btn btn-dark py-3 px-4" href="{{ path('app_demandeservice_newFront', {'id': service.id}) }}">Passez une Demande</a>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div style="margin-left:500px;" class="pagination">
+        {% do services.setPageRange(8) %}
+        {{knp_pagination_render(services, 'pagination.html.twig')}}
+        <br><br><br><br><br>
+    </div>
+{% endblock %}
