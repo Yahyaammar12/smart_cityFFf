@@ -1,0 +1,108 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Liste des Moyens de Loisir{% endblock %}
+
+{% block body %}
+    <h1>| Liste des Moyens de Loisir</h1>
+
+    <button style="margin-left:50px;width:150px;" class="btn btn-block btn-primary">
+        <a style="color:#fff;" href="{{ path('app_loisir_new') }}"><i class="fa fa-plus"></i> Créer un nouveau</a>
+    </button>
+    <br>
+    <div style="background-color:#fff;">
+        <br>
+        <input style="margin-left:30px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+        <br><br>
+        <div style="margin-top:-135px;margin-left:1000px;" class="btn-group">
+            <button type="button" id="actionBtn" class="btn btn-info">Tri Par</button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('app_loisir_index') }}" onclick="setActionText(this)">Défaut</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ path('app_loisir_index_sort_nom') }}" onclick="setActionText(this)">Nom</a></li>
+                <li><a href="{{ path('app_loisir_index_sort_localisation') }}" onclick="setActionText(this)">Localisation</a></li>
+                <li><a href="{{ path('app_loisir_index_sort_type') }}" onclick="setActionText(this)">Type</a></li>
+            </ul>
+        </div>
+        <a style="margin-top:-175px;margin-left:1100px;" class="btn btn-warning" href="{{ path('app_loisir_index_stat') }}">Statistiques</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th>Localisation</th>
+                    <th>Horaire Travail</th>
+                    <th>Utilisateur</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for loisir in loisirs %}
+                <tr>
+                    <td>{{ loisir.nom }}</td>
+                    <td>
+                        {% if loisir.type == 'SPORT' %}
+                            <span class="label label-success">Sport</span>
+                        {% elseif loisir.type == 'CULTURE' %}
+                            <span class="label label-warning">Culture</span>
+                        {% elseif loisir.type == 'LEISURE' %}
+                            <span class="label label-primary">Leisure</span>
+                        {% else %}
+                            <span class="label label-danger">{{ loisir.type }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ loisir.localisation }}</td>
+                    <td>{{ loisir.horaireTravail }}</td>
+                    <td>{{ loisir.user.nom }} {{ loisir.user.prenom }}</td>
+                    <td>
+                        <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_loisir_show', {'id': loisir.id}) }}"><i class="fa fa-ellipsis-v"></i></a></button>
+                        &nbsp;
+                        <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm"><a style="color:#fff;" href="{{ path('app_loisir_edit', {'id': loisir.id}) }}"><i class="fa fa-edit"></i></a></button>
+                        &nbsp;
+                        {{ include('loisir/_delete_form.html.twig') }}
+                        &nbsp;
+                        <button style="margin-top:-50px;margin-left:106px;width:30px;" class="btn btn-block btn-warning btn-sm"><a style="color:#fff;" href="{{ path('app_qr_code', {'id': loisir.id}) }}"><i class="fa fa-qrcode"></i></a></button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No Loisir Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+<script>
+    function setActionText(element) {
+        const actionBtn = document.getElementById("actionBtn");
+        actionBtn.textContent = element.textContent;
+    }
+</script>
+
+
+<script>
+	function filterTable() {
+        const filter = document.getElementById('searchInput').value.toUpperCase();
+        const rows = document.querySelectorAll('table tr');
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll('td');
+            let visible = false;
+            for (let j = 0; j < cols.length; j++) {
+                const cell = cols[j];
+                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                    visible = true;
+                    break;
+                }
+            }
+            rows[i].style.display = visible ? '' : 'none';
+        }
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+</script>
+
+{% endblock %}

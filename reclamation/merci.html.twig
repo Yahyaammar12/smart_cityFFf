@@ -1,0 +1,28 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %} OneUrban | Merci {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="section-tittle text-center mb-100">
+                    <span>| Réclamation Envoyée</span>
+                    <h2>Merci d'envoyer votre réclamation.</h2>
+                    <h2>La réponse est dans 48h.</h2>
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    <br><br>
+                    <a class="btn btn-dark py-3 px-4" href="{{ path('app_tourisme_index_front') }}">Retour à la Liste des Tourismes</a>
+                    <a style="margin-left:10px;" class="btn btn-primary py-3 px-4 me-3 animated fadeIn" href="{{ path('app_reclamation_user_id', {'id': app.user.id}) }}">Afficher Mes Réclamations</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

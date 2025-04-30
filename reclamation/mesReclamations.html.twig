@@ -1,0 +1,63 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}OneUrban | Mes Réclamations{% endblock %}
+
+{% block body %}
+    <h1>| Mes Réclamations</h1>
+    <button style="margin-top:-80px;margin-left:400px;width:220px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href="{{ path('app_tourisme_index_front') }}">Retour a la Liste des Tourismes</a></button>
+    
+    <br><br>
+
+    <div style="background-color:#fff;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Sujet</th>
+                    <th>Description</th>
+                    <th>Rating</th>
+                    <th>Traitement</th>
+                    <th>Tourisme</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for reclamation in reclamations %}
+                <tr>
+                    <td>{{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</td>
+                    <td>{{ reclamation.sujet }}</td>
+                    <td>{{ reclamation.description }}</td>
+                    <td>
+                        {% for i in 1..5 %}
+                            {% if i <= reclamation.rating %}
+                                <i class="fa fa-star"></i>  <!-- Full star -->
+                            {% else %}
+                                <i class="fa fa-star-o"></i>  <!-- Empty star -->
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if reclamation.solved == true %}
+                            <span class="btn btn-block btn-success btn-sm">Oui</span>
+                        {% elseif reclamation.solved == false %}
+                            <span class="btn btn-block btn-danger btn-sm">Non</span>
+                        {% else %}
+                            <span class="btn btn-block btn-warning btn-sm">{{ reclamation.solved }}</span>
+                        {% endif %}
+                    </td>
+                    <td><span class="btn btn-block btn-success btn-sm">{{ tourismeNames[reclamation.tourismeId] ?? 'N/A' }}</span></td>
+                    <td>
+                        {{ include('reclamation/_delete_formFront.html.twig') }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No Reclamations Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+
+{% endblock %}

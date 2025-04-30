@@ -1,0 +1,70 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}OneUrban | Dashboard | Détails Réclamation{% endblock %}
+
+{% block body %}
+    <h1>| Détails Réclamation</h1>
+    <br>
+    <div style="background-color:#fff;">
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Rating</th>
+                    <td>
+                        {% for i in 1..5 %}
+                            {% if i <= reclamation.rating %}
+                                <i class="fa fa-star"></i>  <!-- Full star -->
+                            {% else %}
+                                <i class="fa fa-star-o"></i>  <!-- Empty star -->
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Sujet</th>
+                    <td>{{ reclamation.sujet }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ reclamation.description }}</td>
+                </tr>
+                <tr>
+                    <th>Traitement</th>
+                    <td>
+                        {% if reclamation.solved == true %}
+                            <span class="label label-success">Yes</span>
+                        {% elseif reclamation.solved == false %}
+                            <span class="label label-danger">No</span>
+                        {% else %}
+                            <span class="label label-warning">{{ reclamation.solved }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tourisme</th>
+                    <td><span class="label label-success">{{ tourismeNames[reclamation.tourismeId] ?? 'N/A' }}</span></td>
+                </tr>
+                <tr>
+                    <th>Utilisateur</th>
+                    <td>{{ reclamation.user.prenom }} {{ reclamation.user.nom }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="background-color:#fff;" align="center">
+        <br>
+            <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                <a style="color:#fff;" href="{{ path('app_reclamation_index') }}">Back To List</a>
+            </button>
+            &nbsp;
+            <button style="margin-top:-50px;margin-left:160px;width:40px;" class="btn btn-block btn-success btn-sm">
+                <a style="color:#fff;" href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}"><i class="fa fa-edit"></i></a>
+            </button>
+            <br>
+        </div>
+    </div>
+{% endblock %}
